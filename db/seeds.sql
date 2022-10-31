@@ -1,4 +1,5 @@
 -- Instructs what values to populate the tables with given the provided category keys
+DELETE FROM department;
 INSERT INTO department (id, name)
 VALUES
     ( 001, "Debuggers"),
@@ -6,23 +7,23 @@ VALUES
     ( 003, "Testers"),
     ( 004, "Complicated");
 
-
+DELETE FROM role;
 INSERT INTO role (id, title, salary, department_id)
 VALUES
     ( 001, "Peace Keeper", 1, 001),
-    ( 002, "Moral Compass", 50,000, 001),
-    ( 003, "Ideas Guy", 40,000, 001);
-    ( 004, "Tough Guy", 100,000, 001);
-    ( 005, "Sidekick", 25,000, 001);
-    ( 006, "Fighter", 15,000, 002);
-    ( 007, "Guider", 10,000, 002);
-    ( 008, "Lead Obstacle", 200,000, 003);
-    ( 009, "Obstacle Supporter", 5,000, 003);
-    ( 0010, "Emotional Mess", 472, 004);
+    ( 002, "Moral Compass", 50000, 001),
+    ( 003, "Ideas Guy", 40000, 001),
+    ( 004, "Tough Guy", 100000, 001),
+    ( 005, "Sidekick", 25000, 001),
+    ( 006, "Fighter", 15000, 002),
+    ( 007, "Guider", 10000, 002),
+    ( 008, "Lead Obstacle", 200000, 003),
+    ( 009, "Obstacle Supporter", 5000, 003),
+    ( 0010, "Emotional Mess", 472, 004),
     ( 0011, "Human Xanax", 0, 004);
 
-
-    INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
+DELETE FROM employee;
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 VALUES
     ( 001, "Aang", "Aangerson", 001, null),
     ( 002, "Katara", "Watertribe", 002, 001),
@@ -43,4 +44,4 @@ VALUES
     ( 0017, "Combustion", "Man", 009, 0014),
     ( 0018, "Admiral", "Zhao", 001, 0013),
     ( 0019, "Prince", "Zuko", 0010, null),
-    ( 0020, "Uncle", "Iroh", 0011, 0019),
+    ( 0020, "Uncle", "Iroh", 0011, 0019);

@@ -3,23 +3,18 @@ DROP DATABASE IF EXISTS employee_db;
 -- Creates the sample_db database --
 CREATE DATABASE employee_db;
 
-USE emplyee_db;
-
--- See database in use --
-SELECT DATABASE();
+USE employee_db;
 
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30) NOT NULL,
-  PRIMARY KEY(id)
+  name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL NOT NULL,
-  department_id INT NOT NULL,
-  PRIMARY KEY(id)
+  department_id INT NOT NULL
 );
 
 CREATE TABLE employee (
@@ -27,9 +22,11 @@ CREATE TABLE employee (
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   role_id INT NOT NULL,
-  manager_id INT,
-  PRIMARY KEY(id)
+  manager_id INT
 );
+
+-- See database in use --
+SELECT DATABASE();
 
 -- right click on folder and open integrated terminal
 -- type mysql -u root -p (enter)

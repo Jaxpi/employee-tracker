@@ -1,4 +1,5 @@
 const express = require('express');
+const inquirer = require("inquirer");
 const mysql = require('mysql2');
 
 const PORT = process.env.PORT || 3001;
@@ -28,3 +29,7 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+function prompt() {
+    return inquirer.prompt("");
+}
