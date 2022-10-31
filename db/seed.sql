@@ -1,5 +1,5 @@
 -- instructs what values to populate the biographies table with in the id and name columns
-INSERT INTO biographies (id, name)
+INSERT INTO employees (id, name)
 VALUES
     ( 001, "Diary of Anne Frank"),
     ( 002, "Frida: A Biography of Frida Kahlo"),

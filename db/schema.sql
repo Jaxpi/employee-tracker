@@ -3,16 +3,32 @@ DROP DATABASE IF EXISTS employee_db;
 -- Creates the sample_db database --
 CREATE DATABASE employee_db;
 
-USE books_db;
+USE emplyee_db;
 
 -- See database in use --
 SELECT DATABASE();
 
-CREATE TABLE employees (
-  -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT NOT NULL,
-  -- Makes a string column called "name" which cannot contain null --
-  name VARCHAR(100) NOT NULL
+CREATE TABLE department (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE role (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(30) NOT NULL,
+  salary DECIMAL NOT NULL,
+  department_id INT NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE employee (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  role_id INT NOT NULL,
+  manager_id INT,
+  PRIMARY KEY(id)
 );
 
 -- right click on folder and open integrated terminal
