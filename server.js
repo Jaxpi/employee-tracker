@@ -19,10 +19,6 @@ const db = mysql.createConnection(
   console.log(`Connected to the employee_db database.`)
 );
 
-db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
-  console.table(results);
-});
-
 app.use((req, res) => {
   res.status(404).end();
 });
@@ -32,9 +28,29 @@ app.listen(PORT, () => {
 });
 
 function prompt() {
-    return inquirer.prompt("");
+    inquirer.prompt(
+        [{
+            type: "list",
+            name: "mainMenu",
+            message: "What would you like to do?",
+            choices: ["View All Employees", "Add an Employee", "Update an Employee Role", "View All Roles", "Add a Role", "View All Departments", "Add a Department"]
+    }])
+    .then(function (answers) {        
+        switch (answers.mainMenu) {
+            case "View All Employees":
+                viewAllEmployees();
+            break;
+        }
+    });
 }
 
+prompt();
+
+function viewAllEmployees () {
+    db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
+    console.table(results);
+    });
+}
 
 
 // AS A business owner I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business
