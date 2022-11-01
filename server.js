@@ -1,6 +1,7 @@
 const express = require('express');
 const inquirer = require("inquirer");
 const mysql = require('mysql2');
+const cTable = require('console.table');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -18,8 +19,8 @@ const db = mysql.createConnection(
   console.log(`Connected to the employee_db database.`)
 );
 
-db.query('SELECT * FROM employees', function (err, results) {
-  console.log(results);
+db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
+  console.table(results);
 });
 
 app.use((req, res) => {
