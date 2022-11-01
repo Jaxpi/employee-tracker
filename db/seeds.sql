@@ -1,14 +1,14 @@
 -- Instructs what values to populate the tables with given the provided category keys
-DELETE FROM department;
-INSERT INTO department (id, name)
+DELETE FROM departments;
+INSERT INTO departments (id, name)
 VALUES
     ( 001, "Debuggers"),
     ( 002, "Support"),
     ( 003, "Testers"),
     ( 004, "Complicated");
 
-DELETE FROM role;
-INSERT INTO role (id, title, salary, department_id)
+DELETE FROM roles;
+INSERT INTO roles (id, title, salary, department_id)
 VALUES
     ( 001, "Peace Keeper", 1, 001),
     ( 002, "Moral Compass", 50000, 001),
@@ -22,8 +22,8 @@ VALUES
     ( 0010, "Emotional Mess", 472, 004),
     ( 0011, "Human Xanax", 0, 004);
 
-DELETE FROM employee;
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
+DELETE FROM employees;
+INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
 VALUES
     ( 001, "Aang", "Aangerson", 001, null),
     ( 002, "Katara", "Watertribe", 002, 001),
