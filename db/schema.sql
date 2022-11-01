@@ -3,18 +3,20 @@ DROP DATABASE IF EXISTS employee_db;
 -- Creates the sample_db database --
 CREATE DATABASE employee_db;
 
+-- This tells mysql to use this db
 USE employee_db;
 
+-- These are where the tables are created and the category keys with their data type information, foreign key/reference/on delete instructs that the newly created key is equal to the referenced key in the other table
 CREATE TABLE departments (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE roles (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL NOT NULL,
-  department_id INT NOT NULL,
+  department_id INT,
   FOREIGN KEY (department_id)
   REFERENCES departments(id)
   ON DELETE SET NULL
@@ -24,8 +26,8 @@ CREATE TABLE employees (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  role_id INT NOT NULL,
-  manager_id INT
+  role_id INT,
+  manager_id INT,
   FOREIGN KEY (role_id)
   REFERENCES roles(id)
   ON DELETE SET NULL
