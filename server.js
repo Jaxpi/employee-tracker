@@ -27,6 +27,7 @@ app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`);
 });
 
+// This is the main function to begin the application - it is called at the end of each subsequent function so the user can perform multiple tasks without restarting the terminal
 function mainMenu() {
     inquirer.prompt(
         [{
@@ -70,6 +71,7 @@ function mainMenu() {
 
 mainMenu();
 
+// This is the function to view all the employees, it contains all the information about each employee
 function viewAllEmployees () {
     db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
     console.table(results);
@@ -77,6 +79,7 @@ function viewAllEmployees () {
     });
 }
 
+// This is the function to add an employee, the prompts instruct the user to input information that will be used to insert into the table - in the future I would like to make the choices for the list types to be a selection of the options available, but could not find/figure out how to do that yet (for here and the other instances)
 function addEmployee () {
     inquirer.prompt([
         {
@@ -110,12 +113,13 @@ function addEmployee () {
             manager_id: inquirer.prompt.manager
         }, function (err, results) {
         console.table(employeeInput);
-        console.log("New Employee Added") 
+        console.log('\x1b[33m%s\x1b[0m', "New Employee Added") 
         mainMenu();
         })
     });
 }
 
+// This is the function to update an employee's role, the inputted information will be used to modify the table data
 function updateEmployee () {
     inquirer.prompt([
         {
@@ -134,12 +138,13 @@ function updateEmployee () {
         db.query('UPDATE employees SET role_id = "inquirer.prompt.newRole" WHERE first_name = inquirer.prompt.employeeSelect',
         function (err, results) {
         console.table(employeeUpdate);
-        console.log("Employee Updated") 
+        console.log('\x1b[33m%s\x1b[0m', "Employee Updated") 
         mainMenu();
         })
     });
 }
 
+// This is the function to view all current roles
 function viewRoles () {
     db.query('SELECT * FROM roles', function (err, results) {
     console.table(results);
@@ -147,6 +152,7 @@ function viewRoles () {
     });
 }
 
+// This is the function to add a new role, it is very similar to the add employee function
 function addRole () {
     inquirer.prompt([
         {
@@ -173,12 +179,13 @@ function addRole () {
             department_id: inquirer.prompt.department
         }, function (err, results) {
         console.table(roleInput);
-        console.log("New Role Added") 
+        console.log('\x1b[33m%s\x1b[0m', "New Role Added") 
         mainMenu();
         })
     });
 }
 
+// This is the function to view all the current departments
 function viewAllDepartments () {
     db.query('SELECT * FROM departments', function (err, results) {
     console.table(results);
@@ -186,6 +193,7 @@ function viewAllDepartments () {
     });
 }
 
+// This is the function to add a department, it works in much the same way as adding an employee/adding a new role
 function addDepartment () {
     inquirer.prompt([
         {
@@ -199,12 +207,16 @@ function addDepartment () {
             name: inquirer.prompt.departmentName
         }, function (err, results) {
         console.table(departmentInput);
-        console.log("New Department Added") 
+        console.log('\x1b[33m%s\x1b[0m', "New Department Added") 
         mainMenu();
         })
     });
 }
 
+
+//NOTES:
+
+// These are attempts to create a prepopulated list of options for roles and managers to be used above
 // function roleOptions() {
 //     const roleArray = [];
 //     db.query('SELECT title FROM roles', function (err, results) {
@@ -228,7 +240,6 @@ function addDepartment () {
 // }
 
 // AS A business owner I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business
-
 // GIVEN a command-line application that accepts user input WHEN I start the application THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 // WHEN I choose to view all departments THEN I am presented with a formatted table showing department names and department ids
 // WHEN I choose to view all roles THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
