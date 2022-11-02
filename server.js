@@ -74,8 +74,9 @@ mainMenu();
 
 // This is the function to view all the employees, it contains all the information about each employee
 function viewAllEmployees () {
-    db.query('SELECT e_id as ID, first_name as "First Name", last_name as "Last Name", r_id as "Role ID", title as Title, salary as Salary, d_id as "Dept ID", name as Dept FROM employees LEFT JOIN roles ON employees.role_id = roles.r_id LEFT JOIN departments ON roles.department_id = departments.d_id', function (err, results) {
+    db.query('SELECT e_id as ID, first_name as "First Name", last_name as "Last Name", r_id as "Role ID", title as Title, salary as Salary, d_id as "Dept ID", d_name as Dept FROM employees LEFT JOIN roles ON employees.role_id = roles.r_id LEFT JOIN departments ON roles.department_id = departments.d_id', function (err, results) {
     console.table(results);
+    console.log(err);
     mainMenu();
     });
 }
@@ -126,12 +127,13 @@ async function addEmployee () {
 // This is the function to update an employee's role, the inputted information will be used to modify the table data
 async function updateEmployee () {
     const roles = await roleOptions();
+    const employees = await employeeOptions();
     inquirer.prompt([
         {
             name: "employeeSelect",
             type: "list",
             message: "Select the Employee to Update",
-            choices: ["Aang", "Katara", "Sokka", "Toph", "Appa", "Momo", "Suki", "King", "Chief", "Monk", "Huu", "Master", "Firelord", "Azula", "Tai", "Mai", "Combustion", "Admiral", "Prince", "Uncle"]
+            choices: employees
         },
         {
             name: "newRole",
@@ -259,6 +261,20 @@ function deptOptions() {
                 deptArray.push(results[i].d_id + " - " + results[i].name);
             }
             resolve(deptArray)
+        })
+    });
+}
+
+function employeeOptions() {
+
+    return new Promise((resolve, reject) => {
+        const employeeArray = [];
+        db.query('SELECT first_name FROM employees', function (err, results) {
+            if (err) reject(err)
+            for (i=0; i < results.length; i++) {
+                employeeArray.push(results[i].first_name);
+            }
+            resolve(employeeArray)
         })
     });
 }
