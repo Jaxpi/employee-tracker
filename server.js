@@ -142,9 +142,14 @@ async function updateEmployee () {
             choices: roles
         }
     ]) .then(function (employeeUpdate) {
-        db.query('UPDATE employees SET role_id = "employeeUpdate.newRole" WHERE first_name = employeeUpdate.employeeSelect',
+        db.query('UPDATE employees SET role_id = ? WHERE first_name = ?',
+        [
+            employeeUpdate.newRole.split(" - ")[0],
+            employeeUpdate.employeeSelect
+        ],
         function (err, results) {
         console.table(employeeUpdate);
+        console.log(err);
         console.log('\x1b[33m%s\x1b[0m', "Employee Updated") 
         mainMenu();
         })
