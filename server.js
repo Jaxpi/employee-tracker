@@ -24,7 +24,7 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+//   console.log(`Server running on port ${PORT}`);
 });
 
 function mainMenu() {
@@ -117,9 +117,26 @@ function addEmployee () {
 }
 
 function updateEmployee () {
-    db.query('UPDATE employees SET role_id = "?" WHERE id = ?idvalue;', function (err, results) {
-    console.table(results);
-    mainMenu();
+    inquirer.prompt([
+        {
+            name: "employeeSelect",
+            type: "list",
+            message: "Select the Employee to Update",
+            choices: ["Aang", "Katara", "Sokka", "Toph", "Appa", "Momo", "Suki", "King", "Chief", "Monk", "Huu", "Master", "Firelord", "Azula", "Tai", "Mai", "Combustion", "Admiral", "Prince", "Uncle"]
+        },
+        {
+            name: "newRole",
+            type: "list",
+            message: "Select Their New Role",
+            choices: ["Peace Keeper", "Moral Compass", "Ideas Guy", "Tough Guy", "Sidekick", "Fighter", "Guider", "Lead Obstacle", "Obstacle Supporter", "Emotional Mess", "Human Xanax"]
+        }
+    ]) .then(function (employeeUpdate) {
+        db.query('UPDATE employees SET role_id = "inquirer.prompt.newRole" WHERE first_name = inquirer.prompt.employeeSelect',
+        function (err, results) {
+        console.table(employeeUpdate);
+        console.log("Employee Updated") 
+        mainMenu();
+        })
     });
 }
 
@@ -135,7 +152,7 @@ function addRole () {
         {
             name: "roleName",
             type: "input",
-            message: "Enter Role Name"
+            message: "Enter New Role Name"
         },
         {
             name: "salary",
@@ -170,9 +187,21 @@ function viewAllDepartments () {
 }
 
 function addDepartment () {
-    db.query('INSERT INTO departments (id, name) VALUES (?, ?),', function (err, results) {
-    console.table(results);
-    mainMenu();
+    inquirer.prompt([
+        {
+            name: "departmentName",
+            type: "input",
+            message: "Enter New Department Name"
+        }
+    ]) .then(function (departmentInput) {
+        db.query('INSERT INTO departments SET ?',
+        {
+            name: inquirer.prompt.departmentName
+        }, function (err, results) {
+        console.table(departmentInput);
+        console.log("New Department Added") 
+        mainMenu();
+        })
     });
 }
 
