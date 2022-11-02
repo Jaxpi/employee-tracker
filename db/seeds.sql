@@ -1,6 +1,6 @@
 -- Instructs what values to populate the tables with given the provided category keys
 DELETE FROM departments;
-INSERT INTO departments ('id, 'name)
+INSERT INTO departments (id, name)
 VALUES
     ( 001, "Debuggers"),
     ( 002, "Support"),

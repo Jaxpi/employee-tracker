@@ -40,6 +40,30 @@ function prompt() {
             case "View All Employees":
                 viewAllEmployees();
             break;
+
+            case "Add an Employee":
+                addEmployee();
+            break;
+
+            case "Update an Employee Role":
+                updateEmployee();
+            break;
+
+            case "View All Roles":
+                viewRoles();
+            break;
+
+            case "Add a Role":
+                addRole();
+            break;
+
+            case "View All Departments":
+                viewAllDepartments();
+            break;
+
+            case "Add a Department":
+                addDepartment();
+            break;
         }
     });
 }
@@ -49,9 +73,111 @@ prompt();
 function viewAllEmployees () {
     db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
     console.table(results);
+    prompt();
     });
 }
 
+function addEmployee () {
+    inquirer.prompt([
+        {
+            name: "firstName",
+            type: "input",
+            message: "Enter Employee First Name"
+        },
+        {
+            name: "lastName",
+            type: "input",
+            message: "Enter Employee Last Name"
+        },
+        {
+            name: "role",
+            type: "list",
+            message: "Select Employee Role",
+            choices: ["Peace Keeper", "Moral Compass", "Ideas Guy", "Tough Guy", "Sidekick", "Fighter", "Guider", "Lead Obstacle", "Obstacle Supporter", "Emotional Mess", "Human Xanax"]
+        },
+        {
+            name: "manager",
+            type: "list",
+            message: "Enter Manager Name",
+            choices: ["Aangerson", "Ozai", "Zuko"]
+        }
+    ]) .then(function (userInput) {
+        // const roleOptionChoice = roleOptions().indexOf(userInput.role)
+        // const managerOptionChoice = managerOptions().indexOf(userInput.manager)
+        // console.log(userInput.firstName)
+        // console.log(userInput.lastName)
+        // console.log(userInput.role)
+        // console.log(userInput.manager)
+        db.query('INSERT INTO employees SET ?',
+        {
+            first_name: userInput.firstName,
+            last_name: userInput.lastName,
+            role_id: userInput.role,
+            manager_id: userInput.manager
+        }, function (err, results) {
+        console.table(results);
+        console.log("New Employee Added") 
+        prompt();
+        })
+    });
+}
+
+function updateEmployee () {
+    db.query('UPDATE employees SET role_id = "?" WHERE id = ?idvalue;', function (err, results) {
+    console.table(results);
+    prompt();
+    });
+}
+
+function viewRoles () {
+    db.query('SELECT * FROM roles', function (err, results) {
+    console.table(results);
+    prompt();
+    });
+}
+
+function addRole () {
+    db.query('INSERT INTO roles (id, title, salary, department_id) VALUES (?, ?, ?, ?),', function (err, results) {
+    console.table(results);
+    prompt();
+    });
+}
+
+function viewAllDepartments () {
+    db.query('SELECT * FROM departments', function (err, results) {
+    console.table(results);
+    prompt();
+    });
+}
+
+function addDepartment () {
+    db.query('INSERT INTO departments (id, name) VALUES (?, ?),', function (err, results) {
+    console.table(results);
+    prompt();
+    });
+}
+
+// function roleOptions() {
+//     const roleArray = [];
+//     db.query('SELECT title FROM roles', function (err, results) {
+//         if (err) throw err
+//         for (i=0; i < results.length; i++) {
+//             roleArray.push(results[i]);
+//         }
+//     })
+//     return roleArray;
+// }
+
+// function managerOptions() {
+//     const managerArray = [];
+//     db.query('SELECT last_name FROM employees WHERE manager_id IS NULL', function (err, results) {
+//         if (err) throw err
+//         for (i=0; i < results.length; i++) {
+//             managerArray.push(results[i]);
+//         }
+//     })
+//     return managerArray;
+// }
 
 // AS A business owner I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business
 
