@@ -102,20 +102,14 @@ function addEmployee () {
             choices: ["Aangerson", "Ozai", "Zuko"]
         }
     ]) .then(function (userInput) {
-        // const roleOptionChoice = roleOptions().indexOf(userInput.role)
-        // const managerOptionChoice = managerOptions().indexOf(userInput.manager)
-        // console.log(userInput.firstName)
-        // console.log(userInput.lastName)
-        // console.log(userInput.role)
-        // console.log(userInput.manager)
         db.query('INSERT INTO employees SET ?',
         {
-            first_name: userInput.firstName,
-            last_name: userInput.lastName,
-            role_id: userInput.role,
-            manager_id: userInput.manager
+            first_name: inquirer.prompt.firstName,
+            last_name: inquirer.prompt.lastName,
+            role_id: inquirer.prompt.role,
+            manager_id: inquirer.prompt.manager
         }, function (err, results) {
-        console.table(results);
+        console.table(userInput);
         console.log("New Employee Added") 
         prompt();
         })
@@ -137,6 +131,35 @@ function viewRoles () {
 }
 
 function addRole () {
+    inquirer.prompt([
+        {
+            name: "roleName",
+            type: "input",
+            message: "Enter Role Name"
+        },
+        {
+            name: "salary",
+            type: "input",
+            message: "Enter Role Salary"
+        },
+        {
+            name: "department",
+            type: "input",
+            message: "Enter New Department ID"
+        }
+    ]) .then(function (userInput) {
+        db.query('INSERT INTO roles SET ?',
+        {
+            title: inquirer.prompt.roleName,
+            salary: inquirer.prompt.salary,
+            department_id: inquirer.prompt.department
+        }, function (err, results) {
+            console.table(userInput);
+        console.log("New Role Added") 
+        prompt();
+        })
+    });
+    
     db.query('INSERT INTO roles (id, title, salary, department_id) VALUES (?, ?, ?, ?),', function (err, results) {
     console.table(results);
     prompt();
