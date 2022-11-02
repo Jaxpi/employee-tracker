@@ -74,7 +74,7 @@ mainMenu();
 
 // This is the function to view all the employees, it contains all the information about each employee
 function viewAllEmployees () {
-    db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
+    db.query('SELECT e_id as ID, first_name as "First Name", last_name as "Last Name", r_id as "Role ID", title as Title, salary as Salary, d_id as "Dept ID", name as Dept FROM employees LEFT JOIN roles ON employees.role_id = roles.r_id LEFT JOIN departments ON roles.department_id = departments.d_id', function (err, results) {
     console.table(results);
     mainMenu();
     });
@@ -108,13 +108,14 @@ async function addEmployee () {
             choices: managers
         }
     ]) .then(function (employeeInput) {
-        db.query('INSERT INTO employees SET ?',
-        {
-            first_name: inquirer.prompt.firstName,
-            last_name: inquirer.prompt.lastName,
-            role_id: inquirer.prompt.role,
-            manager_id: inquirer.prompt.manager
-        }, function (err, results) {
+        db.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+        [
+            employeeInput.firstName,
+            employeeInput.lastName,
+            employeeInput.role.split(" - ")[0],
+            employeeInput.manager.split(" - ")[0]
+        ], function (err, results) {
+            console.log(err);
         console.table(employeeInput);
         console.log('\x1b[33m%s\x1b[0m', "New Employee Added") 
         mainMenu();
@@ -139,7 +140,7 @@ async function updateEmployee () {
             choices: roles
         }
     ]) .then(function (employeeUpdate) {
-        db.query('UPDATE employees SET role_id = "inquirer.prompt.newRole" WHERE first_name = inquirer.prompt.employeeSelect',
+        db.query('UPDATE employees SET role_id = "employeeUpdate.newRole" WHERE first_name = employeeUpdate.employeeSelect',
         function (err, results) {
         console.table(employeeUpdate);
         console.log('\x1b[33m%s\x1b[0m', "Employee Updated") 
@@ -223,11 +224,10 @@ function roleOptions() {
 
     return new Promise((resolve, reject) => {
         const roleArray = [];
-        db.query('SELECT title FROM roles', function (err, results) {
-            console.log(results);
+        db.query('SELECT r_id, title FROM roles', function (err, results) {
             if (err) reject(err)
             for (i=0; i < results.length; i++) {
-                roleArray.push(results[i].title);
+                roleArray.push(results[i].r_id + " - " + results[i].title);
             }
             resolve(roleArray)
         })
@@ -238,11 +238,10 @@ function managerOptions() {
 
     return new Promise((resolve, reject) => {
         const managerArray = [];
-        db.query('SELECT last_name FROM employees WHERE manager_id IS NULL', function (err, results) {
-            console.log(results);
+        db.query('SELECT e_id, last_name FROM employees WHERE manager_id IS NULL', function (err, results) {
             if (err) reject(err)
             for (i=0; i < results.length; i++) {
-                managerArray.push(results[i].last_name);
+                managerArray.push(results[i].e_id + " - " + results[i].last_name);
             }
             resolve(managerArray)
         })

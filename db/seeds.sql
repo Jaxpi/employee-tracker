@@ -1,6 +1,6 @@
 -- Instructs what values to populate the tables with given the provided category keys
 DELETE FROM departments;
-INSERT INTO departments (id, name)
+INSERT INTO departments (d_id, name)
 VALUES
     ( 001, "Debuggers"),
     ( 002, "Support"),
@@ -8,7 +8,7 @@ VALUES
     ( 004, "Complicated");
 
 DELETE FROM roles;
-INSERT INTO roles (id, title, salary, department_id)
+INSERT INTO roles (r_id, title, salary, department_id)
 VALUES
     ( 001, "Peace Keeper", 1, 001),
     ( 002, "Moral Compass", 50000, 001),
@@ -23,7 +23,7 @@ VALUES
     ( 0011, "Human Xanax", 0, 004);
 
 DELETE FROM employees;
-INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
+INSERT INTO employees (e_id, first_name, last_name, role_id, manager_id)
 VALUES
     ( 001, "Aang", "Aangerson", 001, null),
     ( 002, "Katara", "Watertribe", 002, 001),
@@ -42,6 +42,6 @@ VALUES
     ( 0015, "Tai", "Lee", 009, 0014),
     ( 0016, "Mai", "Emopants", 009, 0014),
     ( 0017, "Combustion", "Man", 009, 0014),
-    ( 0018, "Admiral", "Zhao", 001, 0013),
+    ( 0018, "Admiral", "Zhao", 009, 0013),
     ( 0019, "Prince", "Zuko", 0010, null),
     ( 0020, "Uncle", "Iroh", 0011, 0019);
