@@ -29,6 +29,7 @@ app.listen(PORT, () => {
 
 // This is the main function to begin the application - it is called at the end of each subsequent function so the user can perform multiple tasks without restarting the terminal
 function mainMenu() {
+    console.log("\x1b[44m", "Employee Tracker", '\x1b[0m')
     inquirer.prompt(
         [{
             type: "list",
