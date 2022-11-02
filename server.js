@@ -27,7 +27,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-function prompt() {
+function mainMenu() {
     inquirer.prompt(
         [{
             type: "list",
@@ -68,12 +68,12 @@ function prompt() {
     });
 }
 
-prompt();
+mainMenu();
 
 function viewAllEmployees () {
     db.query('SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id', function (err, results) {
     console.table(results);
-    prompt();
+    mainMenu();
     });
 }
 
@@ -101,7 +101,7 @@ function addEmployee () {
             message: "Enter Manager Name",
             choices: ["Aangerson", "Ozai", "Zuko"]
         }
-    ]) .then(function (userInput) {
+    ]) .then(function (employeeInput) {
         db.query('INSERT INTO employees SET ?',
         {
             first_name: inquirer.prompt.firstName,
@@ -109,9 +109,9 @@ function addEmployee () {
             role_id: inquirer.prompt.role,
             manager_id: inquirer.prompt.manager
         }, function (err, results) {
-        console.table(userInput);
+        console.table(employeeInput);
         console.log("New Employee Added") 
-        prompt();
+        mainMenu();
         })
     });
 }
@@ -119,14 +119,14 @@ function addEmployee () {
 function updateEmployee () {
     db.query('UPDATE employees SET role_id = "?" WHERE id = ?idvalue;', function (err, results) {
     console.table(results);
-    prompt();
+    mainMenu();
     });
 }
 
 function viewRoles () {
     db.query('SELECT * FROM roles', function (err, results) {
     console.table(results);
-    prompt();
+    mainMenu();
     });
 }
 
@@ -144,39 +144,35 @@ function addRole () {
         },
         {
             name: "department",
-            type: "input",
-            message: "Enter New Department ID"
+            type: "list",
+            message: "Choose Department",
+            choices: ["Debuggers - 001", "Support - 002", "Testers - 003", "Complicated - 004"]
         }
-    ]) .then(function (userInput) {
+    ]) .then(function (roleInput) {
         db.query('INSERT INTO roles SET ?',
         {
             title: inquirer.prompt.roleName,
             salary: inquirer.prompt.salary,
             department_id: inquirer.prompt.department
         }, function (err, results) {
-            console.table(userInput);
+        console.table(roleInput);
         console.log("New Role Added") 
-        prompt();
+        mainMenu();
         })
-    });
-    
-    db.query('INSERT INTO roles (id, title, salary, department_id) VALUES (?, ?, ?, ?),', function (err, results) {
-    console.table(results);
-    prompt();
     });
 }
 
 function viewAllDepartments () {
     db.query('SELECT * FROM departments', function (err, results) {
     console.table(results);
-    prompt();
+    mainMenu();
     });
 }
 
 function addDepartment () {
     db.query('INSERT INTO departments (id, name) VALUES (?, ?),', function (err, results) {
     console.table(results);
-    prompt();
+    mainMenu();
     });
 }
 
