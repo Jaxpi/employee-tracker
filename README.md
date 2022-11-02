@@ -3,7 +3,7 @@
 ## Video Walkthrough
 
 Please watch the video walkthrough found at the link below:<br>
-https://drive.google.com/file/d/1K535XkePFCoN3RUNnfPMxFPGeZGahpz1/view
+https://drive.google.com/file/d/1blqybXmAUl_oIw76QJmy-xcN2lCA6oR1/view
 
 ## Description
 
