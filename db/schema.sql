@@ -9,7 +9,7 @@ USE employee_db;
 -- These are where the tables are created and the category keys with their data type information, foreign key/reference/on delete instructs that the newly created key is equal to the referenced key in the other table
 CREATE TABLE departments (
   d_id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30) NOT NULL
+  d_name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE roles (

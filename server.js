@@ -200,7 +200,8 @@ function viewAllDepartments () {
 }
 
 // This is the function to add a department, it works in much the same way as adding an employee/adding a new role
-function addDepartment () {
+async function addDepartment () {
+    const depts = await deptOptions();
     inquirer.prompt([
         {
             name: "departmentName",
@@ -208,13 +209,13 @@ function addDepartment () {
             message: "Enter New Department Name"
         }
     ]) .then(function (departmentInput) {
-        db.query('INSERT INTO departments SET ?',
-        {
-            name: inquirer.prompt.departmentName
-        }, function (err, results) {
-        console.table(departmentInput);
-        console.log('\x1b[33m%s\x1b[0m', "New Department Added") 
-        mainMenu();
+        db.query('INSERT INTO departments (d_name) VALUES (?)',
+        [departmentInput.departmentName],
+        function (err, results) {
+            console.log(err);
+            console.table(departmentInput);
+            console.log('\x1b[33m%s\x1b[0m', "New Department Added") 
+            mainMenu();
         })
     });
 }
@@ -244,6 +245,20 @@ function managerOptions() {
                 managerArray.push(results[i].e_id + " - " + results[i].last_name);
             }
             resolve(managerArray)
+        })
+    });
+}
+
+function deptOptions() {
+
+    return new Promise((resolve, reject) => {
+        const deptArray = [];
+        db.query('SELECT * FROM departments', function (err, results) {
+            if (err) reject(err)
+            for (i=0; i < results.length; i++) {
+                deptArray.push(results[i].d_id + " - " + results[i].name);
+            }
+            resolve(deptArray)
         })
     });
 }
