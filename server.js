@@ -81,7 +81,9 @@ function viewAllEmployees () {
 }
 
 // This is the function to add an employee, the prompts instruct the user to input information that will be used to insert into the table - in the future I would like to make the choices for the list types to be a selection of the options available, but could not find/figure out how to do that yet (for here and the other instances)
-function addEmployee () {
+async function addEmployee () {
+    const roles = await roleOptions();
+    const managers = await managerOptions();
     inquirer.prompt([
         {
             name: "firstName",
@@ -97,13 +99,13 @@ function addEmployee () {
             name: "role",
             type: "list",
             message: "Select Employee Role",
-            choices: ["Peace Keeper", "Moral Compass", "Ideas Guy", "Tough Guy", "Sidekick", "Fighter", "Guider", "Lead Obstacle", "Obstacle Supporter", "Emotional Mess", "Human Xanax"]
+            choices: roles
         },
         {
             name: "manager",
             type: "list",
             message: "Enter Manager Name",
-            choices: ["Aangerson", "Ozai", "Zuko"]
+            choices: managers
         }
     ]) .then(function (employeeInput) {
         db.query('INSERT INTO employees SET ?',
@@ -121,7 +123,8 @@ function addEmployee () {
 }
 
 // This is the function to update an employee's role, the inputted information will be used to modify the table data
-function updateEmployee () {
+async function updateEmployee () {
+    const roles = await roleOptions();
     inquirer.prompt([
         {
             name: "employeeSelect",
@@ -133,7 +136,7 @@ function updateEmployee () {
             name: "newRole",
             type: "list",
             message: "Select Their New Role",
-            choices: ["Peace Keeper", "Moral Compass", "Ideas Guy", "Tough Guy", "Sidekick", "Fighter", "Guider", "Lead Obstacle", "Obstacle Supporter", "Emotional Mess", "Human Xanax"]
+            choices: roles
         }
     ]) .then(function (employeeUpdate) {
         db.query('UPDATE employees SET role_id = "inquirer.prompt.newRole" WHERE first_name = inquirer.prompt.employeeSelect',
@@ -173,12 +176,13 @@ function addRole () {
             choices: ["Debuggers - 001", "Support - 002", "Testers - 003", "Complicated - 004"]
         }
     ]) .then(function (roleInput) {
-        db.query('INSERT INTO roles SET ?',
-        {
-            title: inquirer.prompt.roleName,
-            salary: inquirer.prompt.salary,
-            department_id: inquirer.prompt.department
-        }, function (err, results) {
+        db.query('INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)',
+        [
+            roleInput.roleName,
+            roleInput.salary,
+            roleInput.department.split(" - ")[1]
+        ], function (err, results) {
+            console.log(err);
         console.table(roleInput);
         console.log('\x1b[33m%s\x1b[0m', "New Role Added") 
         mainMenu();
@@ -214,31 +218,39 @@ function addDepartment () {
     });
 }
 
+// These are functions to create prepopulated lists of options for selecting roles and managers to be used above
+function roleOptions() {
+
+    return new Promise((resolve, reject) => {
+        const roleArray = [];
+        db.query('SELECT title FROM roles', function (err, results) {
+            console.log(results);
+            if (err) reject(err)
+            for (i=0; i < results.length; i++) {
+                roleArray.push(results[i].title);
+            }
+            resolve(roleArray)
+        })
+    });
+}
+
+function managerOptions() {
+
+    return new Promise((resolve, reject) => {
+        const managerArray = [];
+        db.query('SELECT last_name FROM employees WHERE manager_id IS NULL', function (err, results) {
+            console.log(results);
+            if (err) reject(err)
+            for (i=0; i < results.length; i++) {
+                managerArray.push(results[i].last_name);
+            }
+            resolve(managerArray)
+        })
+    });
+}
+
 
 //NOTES:
-
-// These are attempts to create a prepopulated list of options for roles and managers to be used above
-// function roleOptions() {
-//     const roleArray = [];
-//     db.query('SELECT title FROM roles', function (err, results) {
-//         if (err) throw err
-//         for (i=0; i < results.length; i++) {
-//             roleArray.push(results[i]);
-//         }
-//     })
-//     return roleArray;
-// }
-
-// function managerOptions() {
-//     const managerArray = [];
-//     db.query('SELECT last_name FROM employees WHERE manager_id IS NULL', function (err, results) {
-//         if (err) throw err
-//         for (i=0; i < results.length; i++) {
-//             managerArray.push(results[i]);
-//         }
-//     })
-//     return managerArray;
-// }
 
 // AS A business owner I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business
 // GIVEN a command-line application that accepts user input WHEN I start the application THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
