@@ -76,7 +76,6 @@ mainMenu();
 function viewAllEmployees () {
     db.query('SELECT e_id as ID, first_name as "First Name", last_name as "Last Name", r_id as "Role ID", title as Title, salary as Salary, d_id as "Dept ID", d_name as Dept FROM employees LEFT JOIN roles ON employees.role_id = roles.r_id LEFT JOIN departments ON roles.department_id = departments.d_id', function (err, results) {
     console.table(results);
-    console.log(err);
     mainMenu();
     });
 }
@@ -116,7 +115,6 @@ async function addEmployee () {
             employeeInput.role.split(" - ")[0],
             employeeInput.manager.split(" - ")[0]
         ], function (err, results) {
-            console.log(err);
         console.table(employeeInput);
         console.log('\x1b[33m%s\x1b[0m', "New Employee Added") 
         mainMenu();
@@ -149,7 +147,6 @@ async function updateEmployee () {
         ],
         function (err, results) {
         console.table(employeeUpdate);
-        console.log(err);
         console.log('\x1b[33m%s\x1b[0m', "Employee Updated") 
         mainMenu();
         })
@@ -190,7 +187,6 @@ function addRole () {
             roleInput.salary,
             roleInput.department.split(" - ")[1]
         ], function (err, results) {
-            console.log(err);
         console.table(roleInput);
         console.log('\x1b[33m%s\x1b[0m', "New Role Added") 
         mainMenu();
@@ -219,7 +215,6 @@ async function addDepartment () {
         db.query('INSERT INTO departments (d_name) VALUES (?)',
         [departmentInput.departmentName],
         function (err, results) {
-            console.log(err);
             console.table(departmentInput);
             console.log('\x1b[33m%s\x1b[0m', "New Department Added") 
             mainMenu();
