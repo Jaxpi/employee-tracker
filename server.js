@@ -259,7 +259,7 @@ function deptOptions() {
         db.query('SELECT * FROM departments', function (err, results) {
             if (err) reject(err)
             for (i=0; i < results.length; i++) {
-                deptArray.push(results[i].d_id + " - " + results[i].name);
+                deptArray.push(results[i].d_id + " - " + results[i].d_name);
             }
             resolve(deptArray)
         })
