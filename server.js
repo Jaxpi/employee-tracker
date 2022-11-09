@@ -162,7 +162,8 @@ function viewRoles () {
 }
 
 // This is the function to add a new role, it is very similar to the add employee function
-function addRole () {
+async function addRole () {
+    const depts = await deptOptions();
     inquirer.prompt([
         {
             name: "roleName",
@@ -178,7 +179,7 @@ function addRole () {
             name: "department",
             type: "list",
             message: "Choose Department",
-            choices: ["Debuggers - 001", "Support - 002", "Testers - 003", "Complicated - 004"]
+            choices: depts
         }
     ]) .then(function (roleInput) {
         db.query('INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)',
@@ -281,6 +282,8 @@ function employeeOptions() {
 
 
 //NOTES:
+
+// Would like to add - remove option; validation that if nothing is typed for new role or name input then it re-prompts with a notification to enter a valid input
 
 // AS A business owner I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business
 // GIVEN a command-line application that accepts user input WHEN I start the application THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
