@@ -204,8 +204,7 @@ function viewAllDepartments () {
 }
 
 // This is the function to add a department, it works in much the same way as adding an employee/adding a new role
-async function addDepartment () {
-    const depts = await deptOptions();
+function addDepartment () {
     inquirer.prompt([
         {
             name: "departmentName",
